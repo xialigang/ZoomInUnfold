@@ -9,8 +9,8 @@ import math
 import sys, getopt
 import string
 import os
-#from ROOT import *
-from ROOT import TFile, TTree, TH1F, TH1D, TH2F, TH2D,  TCanvas, TLegend, TF1, gROOT, gSystem
+from ROOT import *
+#from ROOT import TFile, TTree, TH1F, TH1D, TH2F, TH2D,  TCanvas, TLegend, TF1, gROOT, gSystem, gRandom
 
 import ROOT
 import numpy as np
@@ -40,7 +40,10 @@ def generate_dataset(Icase=1):
     func.SetParameters(0.01,1,0.2)
     Cs = TCanvas('Cs', '', 10, 10, 800, 600)
     func.Draw()
+    func.GetXaxis().SetTitle('mass [GeV]')
+    func.GetYaxis().SetTitle('Arbitrary Scale')
     Cs.SaveAs('Cs_func.png')
+    Cs.SaveAs('Cs_func.pdf')
     f = TFile('data_'+str(Icase)+'.root', 'recreate')
     tree = TTree('nominal', '')
     mtrue = array('f', [0])
@@ -80,16 +83,20 @@ def prepare_Axb(tree, nx=30, ny=30, binning=[], wsg=0):
         nbinsy = len(binning)-1
         binning = np.array(binning)
     hA = TH2D('hA', '', nbinsy, xmin, xmax, nbinsx, xmin, xmax)
+    hx = TH1D('hx', '', nbinsx, xmin, xmax)
+    hxp = TH1D('hxp', '', nbinsx, xmin, xmax)
+    hb = TH1D('hb', '', nbinsy, xmin, xmax)
+    hbp = TH1D('hbp', '', nbinsy, xmin, xmax)
     if len(binning) > 0:
         hA = TH2D('hA', '', nbinsy, binning, nbinsx, binning)
         hx = TH1D('hx', '', nbinsx, binning)
         hxp = TH1D('hxp', '', nbinsx, binning)
         hb = TH1D('hb', '', nbinsy, binning)
         hbp = TH1D('hbp', '', nbinsy, binning)
-        hx.Sumw2()
-        hxp.Sumw2()
-        hb.Sumw2()
-        hbp.Sumw2()
+    hx.Sumw2()
+    hxp.Sumw2()
+    hb.Sumw2()
+    hbp.Sumw2()
     hA.Sumw2()
     if len(binning)>0:
         tree.Draw('mtrue>>hx')
@@ -133,12 +140,7 @@ def prepare_Axb(tree, nx=30, ny=30, binning=[], wsg=0):
     hb = gROOT.FindObject('hb')
     hxp = gROOT.FindObject('hxp')
     hbp = gROOT.FindObject('hbp')
-    if len(binning) == 0:
-        hx.Sumw2()
-        hxp.Sumw2()
-        hb.Sumw2()
-        hbp.Sumw2()
-    showhist(hbp)
+    #showhist(hbp)
     if wsg:
         return hA, hx, hb, hxp, hbp
     else:
