@@ -9,8 +9,8 @@ import math
 import sys, getopt
 import string
 import os
-from ROOT import *
-#from ROOT import TFile, TTree, TH1F, TH1D, TH2F, TH2D,  TCanvas, TLegend, TF1, gROOT, gSystem, gRandom
+#from ROOT import *
+from ROOT import TFile, TTree, TH1F, TH1D, TH2F, TH2D,  TCanvas, TLegend, TF1, gROOT, gSystem, gRandom
 
 import ROOT
 import numpy as np
