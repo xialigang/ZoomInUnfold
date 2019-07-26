@@ -388,8 +388,8 @@ def main(Icase = 1, Imethod=1):
         if Imethod == 1:
             ny = 60
     print('nx, ny =', nx,ny)
-    binning = [50.0, 65.0, 72.5, 80.0, 83.75, 87.5, 89.375, 91.25, 93.125, 95.0, 98.75, 102.5, 110.0, 117.5, 121.25, 123.125, 125.0, 126.875, 128.75, 130.625, 132.5, 134.375, 136.25, 138.125, 140.0, 141.875, 143.75, 147.5, 155.0, 170.0, 200.0]
-    #binning = []
+    #binning = [50.0, 65.0, 72.5, 80.0, 83.75, 87.5, 89.375, 91.25, 93.125, 95.0, 98.75, 102.5, 110.0, 117.5, 121.25, 123.125, 125.0, 126.875, 128.75, 130.625, 132.5, 134.375, 136.25, 138.125, 140.0, 141.875, 143.75, 147.5, 155.0, 170.0, 200.0]
+    binning = []
     hA, hx, hb = prepare_Axb(tree, nx, ny, binning)
     if 0:
         hA, hx, hb, hxp, hbp = prepare_Axb(tree, nx, ny, 1)
@@ -408,5 +408,5 @@ def main(Icase = 1, Imethod=1):
     single_unfold(hA, hx, hb, Icase, Imethod, tree)
 
 for Icase in [2]:
-    for Imethod in [0]:
+    for Imethod in [4]:
         main(Icase, Imethod)
