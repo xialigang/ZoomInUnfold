@@ -56,9 +56,9 @@ def generate_dataset(Icase=1):
         elif Icase == 3:
             x = gRandom.Gaus(x0+5, 20)
         else:
-            print 'ERROR!!!'
+            print('ERROR!!!')
             break
-        #print x0,x
+        #print(x0,x)
         mtrue[0]=x0
         mrec[0] = x
         tree.Fill()
@@ -127,7 +127,7 @@ def prepare_Axb(tree, nx=30, ny=30, binning=[], wsg=0):
             else:
                 hA.SetBinContent(i+1, j+1, float(Nrec)/float(Ntrue))
             sumNrec += Nrec
-        #print 'point',i,sumNrec/Ntrue
+        #print('point',i,sumNrec/Ntrue)
     hx = gROOT.FindObject('hx')
     hb = gROOT.FindObject('hb')
     hxp = gROOT.FindObject('hxp')
@@ -172,7 +172,7 @@ def divide_binwidth(h):
         newh.SetBinError(i+1, dn/w)
     return newh
 def newunfold(Icase=1):
-    print 'Using Sunfold method....'
+    print('Using Sunfold method....')
     xmin = 50.
     xmax = 200.
     nbins = 5
@@ -201,36 +201,36 @@ def newunfold(Icase=1):
     hb = convert2hist(binning, hb, 'rec')
     hx = convert2hist(binning, hx, 'true')
     hout = convert2hist(binning, hout, 'out')
-    print 'binning =', binning
+    print('binning =', binning)
     if 0:
-        print 'binning =', binning
-        print 'hb =', hb, hb.Integral(), hb.GetNbinsX()
-        print 'hx =', hx, hx.Integral(), hx.GetNbinsX()
-        print 'hout =', hout, hout.Integral(), hout.GetNbinsX()
-        print 'Rx =', Rx
-        print 'hRx =', hRx, hRx.Integral(), hRx.GetNbinsX()
+        print('binning =', binning)
+        print('hb =', hb, hb.Integral(), hb.GetNbinsX())
+        print('hx =', hx, hx.Integral(), hx.GetNbinsX())
+        print('hout =', hout, hout.Integral(), hout.GetNbinsX())
+        print('Rx =', Rx)
+        print('hRx =', hRx, hRx.Integral(), hRx.GetNbinsX())
 
     fsc = hx.Integral() / hout.Integral()
     #hout.Scale(fsc)
-    print 'fsc =', fsc
+    print('fsc =', fsc)
     showhist(hout)
     return hb,hx,hout, hRx
 
 def showhist(h):
-    print 'showhist', h
+    print('showhist', h)
     nbins = h.GetNbinsX()
-    print h, nbins
+    print(h, nbins)
     for i in range(nbins):
-        print i, h.GetBinContent(i+1), '+/-', h.GetBinError(i+1)
+        print(i, h.GetBinContent(i+1), '+/-', h.GetBinError(i+1))
     return
 
 
 def unfold(hA, hx, hb, Icase=1, Imethod=1, tree=None):
-    print 'we are in unfold()'
+    print('we are in unfold()')
     hRx = None
     if Imethod!=4:
-        print 'Dim(meas) =', hb.GetNbinsX(), hA.GetXaxis().GetNbins()
-        print 'Dim(true) =', hx.GetNbinsX(), hA.GetYaxis().GetNbins()
+        print('Dim(meas) =', hb.GetNbinsX(), hA.GetXaxis().GetNbins())
+        print('Dim(true) =', hx.GetNbinsX(), hA.GetYaxis().GetNbins())
         response = RooUnfoldResponse(0, 0, hA)
         if Imethod == 0:
             unfold = RooUnfoldInvert(response, hb)
@@ -246,16 +246,16 @@ def unfold(hA, hx, hb, Icase=1, Imethod=1, tree=None):
                 nSv = 30
             elif hx.GetNbinsX() == 100:
                 nSv = 60
-            print 'nSv =',nSv
+            print('nSv =',nSv)
             unfold = RooUnfoldSvd(response, hb, nSv, 10)
-            #print 'kterm =', unfold.GetKterm()
+            #print('kterm =', unfold.GetKterm())
         elif Imethod == 3:
             nItr = 300
             if hx.GetNbinsX() == 50:
                 nItr = 200
             elif hx.GetNbinsX() == 100:
                 nItr = 300
-            print 'nItr =',nItr, hx.GetNbinsX()
+            print('nItr =',nItr, hx.GetNbinsX())
             unfold = RooUnfoldBayes(response, hb, nItr, 0)
         hout = unfold.Hreco(2)
         Vx = unfold.Ereco(2)
@@ -353,7 +353,7 @@ def plot_Axb(hA, hx, hb, hout, hRx=None, uniform=1, plotname=''):
     Cs.SaveAs('Cs_xb_'+plotname+'.png')
     Cs.SaveAs('Cs_xb_'+plotname+'.pdf')
 def single_unfold(hA, hx, hb, Icase=1, Imethod=1, tree=None):
-    print 'we are in single_unfold()'
+    print('we are in single_unfold()')
     hb, hx, hout, hRx = unfold(hA, hx, hb, Icase, Imethod, tree)
     uniform = 1
     if Imethod == 4 or 1:
@@ -363,7 +363,7 @@ def single_unfold(hA, hx, hb, Icase=1, Imethod=1, tree=None):
 def main(Icase = 1, Imethod=1):
     filename = 'data_'+str(Icase)+'.root'
     if not os.path.isfile(filename):
-        print 'generate dataset ......................................................'
+        print('generate dataset ......................................................')
         generate_dataset(Icase)
     f = TFile(filename, 'read')
     tree = f.Get('nominal')
@@ -386,7 +386,7 @@ def main(Icase = 1, Imethod=1):
         ny = nx
         if Imethod == 1:
             ny = 60
-    print 'nx, ny =', nx,ny
+    print('nx, ny =', nx,ny)
     binning = [50.0, 65.0, 72.5, 80.0, 83.75, 87.5, 89.375, 91.25, 93.125, 95.0, 98.75, 102.5, 110.0, 117.5, 121.25, 123.125, 125.0, 126.875, 128.75, 130.625, 132.5, 134.375, 136.25, 138.125, 140.0, 141.875, 143.75, 147.5, 155.0, 170.0, 200.0]
     #binning = []
     hA, hx, hb = prepare_Axb(tree, nx, ny, binning)
@@ -400,10 +400,10 @@ def main(Icase = 1, Imethod=1):
         hbp.Write('hyp')
         savefile.Close()
     if 0:
-        print 'for debugging, hb = ..., hA = ...'
+        print('for debugging, hb = ..., hA = ...')
         nbins = hb.GetNbinsX()
         for i in range(nbins):
-            print i, hb.GetBinContent(i+1), hA.GetBinContent(1, i+1)
+            print(i, hb.GetBinContent(i+1), hA.GetBinContent(1, i+1))
     single_unfold(hA, hx, hb, Icase, Imethod, tree)
 
 for Icase in [2]:
