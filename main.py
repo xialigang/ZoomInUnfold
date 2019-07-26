@@ -9,7 +9,8 @@ import math
 import sys, getopt
 import string
 import os
-from ROOT import *
+#from ROOT import *
+from ROOT import TFile, TTree, TH1F, TH1D, TH2F, TH2D,  TCanvas, TLegend, TF1, gROOT, gSystem
 
 import ROOT
 import numpy as np
@@ -24,7 +25,7 @@ gROOT.SetBatch(True)
 
 gSystem.Load("/root/workarea/RooUnfold/libRooUnfold.so")
 
-from Sunfold import Sunfold
+from ZoomInUnfold import ZoomInUnfold
 
 
 def ftrue(X, par=[]):
@@ -172,7 +173,7 @@ def divide_binwidth(h):
         newh.SetBinError(i+1, dn/w)
     return newh
 def newunfold(Icase=1):
-    print('Using Sunfold method....')
+    print('Using ZoomInUnfold method....')
     xmin = 50.
     xmax = 200.
     nbins = 5
@@ -193,7 +194,7 @@ def newunfold(Icase=1):
     sigtreename = 'nominal'
     datafilepath = sigfilepath
     datatreename = sigtreename
-    unfold = Sunfold(sigfilepath, sigtreename, datafilepath, datatreename, 'mtrue', 'mrec', xmin, xmax, nbins, nsplit, res, dotoymc, ntoys)
+    unfold = ZoomInUnfold(sigfilepath, sigtreename, datafilepath, datatreename, 'mtrue', 'mrec', xmin, xmax, nbins, nsplit, res, dotoymc, ntoys)
     unfold.do_unfold()
     #binning, hb, hx, hout = unfold.get_output_hist()
     binning, hb, hx, hout = unfold.get_output()
